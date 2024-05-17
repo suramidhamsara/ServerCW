@@ -10,28 +10,23 @@ class Answer extends CI_Controller
 		$this->load->helper('url');
 	}
 
-
-
-
-
-	public function answer_question()
+	public function mark_as_correct()
 	{
 		if (!$this->session->userdata('user_id')) {
 			// If the user is not logged in, redirect to the home page
-			redirect('home');
+			redirect('login');
 		}
+
 		// Load the Answer_model
 		$this->load->model('Answer_model');
 
-		// Get user input
-		$answer = $this->input->post('answer');
+		// Get answer id from post data
+		$answer_id = $this->input->post('answer_id');
 		$question_id = $this->input->post('question_id');
 
-		// Get user id from session
-		$user_id = $this->session->userdata('user_id');
-
-		// Answer the question
-		$this->Answer_model->answer_question($answer, $question_id, $user_id);
+		// Mark the answer as correct
+		$this->Answer_model->mark_as_correct($answer_id, $question_id, $this->session->userdata('user_id'));
+		redirect('question/view/' . $question_id);
 	}
 
 	public function delete_answer()
@@ -45,9 +40,16 @@ class Answer extends CI_Controller
 
 		// Get answer id from post data
 		$answer_id = $this->input->post('answer_id');
+		$question_id = $this->input->post('question_id');
 
 		// Delete the answer
 		$this->Answer_model->delete_answer($answer_id);
+		redirect('question/view/' . $question_id);
+	}
+
+	public function set_previous_url()
+	{
+		$this->session->set_userdata('previous_url', current_url());
 	}
 }
-/* End of file Answer.php and path \application\controllers\Answer.php */
+

@@ -49,18 +49,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'home';
+$route['default_controller'] = 'mainPage';
 $route['home'] = 'home';
-$route['main_page'] = 'main_page';
 $route['login'] = 'user/login';
 $route['register'] = 'user/register';
 $route['profile'] = 'user/profile';
 $route['delete_account'] = 'user/delete_account';
-$route['ask_question'] = 'question/ask_question';
 $route['mark_as_solved/(:any)'] = 'question/mark_as_solved/$1';
-$route['delete_question/(:any)'] = 'question/delete_question/$1';
-$route['answer_question/(:any)'] = 'answer/answer_question/$1';
-$route['delete_answer/(:any)'] = 'answer/delete_answer/$1';
-$route['vote_answer/(:any)/(:any)'] = 'vote/vote_answer/$1/$2';
-$route['404_override'] = '';
+$route['question/view/(:any)'] = 'question/view_question/$1';
+$route['question/view/(:any)/show_answer_form'] = 'question/show_answer_form/$1';
+$route['question/view/(:any)/answer/submit'] = 'question/answer_question/$1';
+$route['question/(:any)/answer/(:any)/vote/(:any)'] = 'vote/vote_answer';
+$route['404_override'] = 'home';
 $route['translate_uri_dashes'] = FALSE;

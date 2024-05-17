@@ -1,81 +1,108 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-
 class Home extends CI_Controller
 {
-
 	protected $data = [];
+	protected $questions = [];
 
+	protected $updated_questions = [];
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->library('session');
-		$this->load->helper('url');
-		$this->load->helper('date');
-		$this->load->model('Question_model');
 		date_default_timezone_set('Asia/Colombo');
 		$this->data['user_id'] = $this->session->userdata('user_id');
 		$this->data['username'] = $this->session->userdata('username');
 		$this->data['title'] = 'Home';
-		$this->data['questions'] = $this->Question_model->get_questions();
-
+		$this->questions = $this->Question_model->get_questions();
+		$this->data['questions'] = $this->questions;
+		$this->data['showForm'] = false;
+		$this->data['isAskQueBtn'] = true;
+		foreach ($this->questions as $question) {
+			$answer_count = $this->Question_model->get_answer_count($question['id']);
+			$question['answer_count'] = $answer_count;
+			$question['time_span'] = strtolower(timespan(strtotime($question['date_asked']), time(), 2));
+			$this->updated_questions[] = $question;
+		}
+		$this->data['questions'] = $this->updated_questions;
 	}
-
 	public function index()
 	{
 
-		// Don't show the form initially
-		$this->data['isShowForm'] = false;
-
-		// Load the home view and pass the list of questions to it
+		log_message('debug', 'Home page loading');
 		$this->load->view('home', $this->data);
 	}
 
 	public function show_ask_form()
 	{
-		// Check if the user is logged in
+		log_message('debug', 'show_ask_form() called');
 		if (!$this->session->userdata('user_id')) {
-			// Redirect the user to the login page
-			redirect('user/login');
+			$this->set_previous_url();
+			redirect('login');
 		}
-
-		$this->load->library('form_validation');
-
-
-		// Get the list of questions
-
-
-		$this->data['isShowForm'] = true;
+		$this->data['showForm'] = true;
+		$this->data['isAskQueBtn'] = false;
+		log_message('debug', 'Ask form loaded');
 		$this->load->view('home', $this->data);
 	}
-
 	public function ask_question()
 	{
-		$this->load->library('form_validation');
-
+		log_message('debug', 'ask_question() called');
 		$this->form_validation->set_rules('title', 'Title', 'required');
 		$this->form_validation->set_rules('description', 'Description', 'required');
-
-		// Get the question title and description
 		$title = $this->input->post('title');
 		$description = $this->input->post('description');
-
-
 		if ($this->form_validation->run() == FALSE) {
 			$this->show_ask_form();
 		} else {
-			// Get the user id
 			$user_id = $this->session->userdata('user_id');
-
-			// Insert the question into the database
 			$this->Question_model->ask_question($title, $description, $user_id);
-
-			// Redirect the user to the home page
+			$this->data['showForm'] = false;
+			$this->data['isAskQueBtn'] = true;
+			log_message('debug', 'Question Added');
 			redirect('home');
 		}
+	}
+	public function search()
+	{
+		log_message('debug', 'search() called');
+		$search = trim($this->input->get('search'));
+		if (empty($search)) {
+			redirect('home');
+		} else {
+			$search_words = explode(' ', $search);
+			$filtered_questions = [];
+			foreach ($search_words as $word) {
+				$filtered = array_filter($this->questions, function ($question) use ($word) {
+					return strpos(strtolower($question['title']), strtolower($word)) !== false;
+				});
+				$filtered_questions = array_merge($filtered_questions, $filtered);
+			}
+			$filtered_questions = array_unique($filtered_questions, SORT_REGULAR);
+			usort($filtered_questions, function ($a, $b) {
+				return strtotime($b['date_asked']) - strtotime($a['date_asked']);
+			});
 
+			$updated_questions = [];
+			foreach ($filtered_questions as $question) {
+				$answer_count = $this->Question_model->get_answer_count($question['id']);
+				$question['answer_count'] = $answer_count;
+				$question['time_span'] = strtolower(timespan(strtotime($question['date_asked']), time(), 2));
+				$updated_questions[] = $question;
+			}
+
+			$this->data['questions'] = $updated_questions;
+			log_message('debug', 'Search results loaded');
+			$this->load->view('home', $this->data);
+		}
+	}
+	public function set_previous_url()
+	{
+		$this->session->set_userdata('previous_url', current_url());
 	}
 
+	public function hide_ask_que_btn()
+	{
+		$this->data['isAskQueBtn'] = true;
+		$this->load->view('home', $this->data);
+	} 
 }
-
-/* End of file Home.php and path \application\controllers\Home.php */

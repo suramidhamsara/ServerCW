@@ -13,7 +13,6 @@ class Answer_model extends CI_Model
 		return $this->db->insert('answers', $data);
 	}
 
-
 	public function get_answers_by_user($user_id)
 	{
 		$this->db->select('answers.*, questions.title as question_title');
@@ -28,10 +27,26 @@ class Answer_model extends CI_Model
 		return $result;
 	}
 
+	public function mark_as_correct($answer_id, $question_id, $user_id)
+	{
+		// Check if the user is the owner of the question
+		$this->db->where('id', $question_id);
+		$this->db->where('user_id', $user_id);
+		$query = $this->db->get('questions');
+
+		if ($query->num_rows() > 0) {
+			// The user is the owner of the question, so mark the answer as correct
+			$this->db->where('id', $answer_id);
+			$this->db->update('answers', array('is_correct' => 1));
+			$this->db->where('id', $question_id);
+			$this->db->update('questions', array('is_solved' => 1));
+		}
+	}
+
 	public function get_correct_answers_by_user($user_id)
 	{
 		$this->db->where('user_id', $user_id);
-		$this->db->where('is_correct', 1); // Only get answers marked as correct
+		$this->db->where('is_correct', 1);
 		$query = $this->db->get('answers');
 		return $query->result_array();
 	}
@@ -43,7 +58,3 @@ class Answer_model extends CI_Model
 		return $this->db->delete('answers');
 	}
 }
-
-
-
-/* End of file Answer_model.php and path \application\models\Answer_model.php */
