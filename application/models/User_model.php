@@ -30,13 +30,11 @@ class User_model extends CI_Model
 		$result = $this->db->get('users');
 
 		if ($result->num_rows() > 0) {
-			// If email exists, return an error message
 			return array('error' => 'Email already exists. Please choose a different one.');
 		}
 
 		// Check if password is valid
 		if (strlen($password) < 8) {
-			// If password is less than 8 characters, return an error message
 			return array('error' => 'Password should be at least 8 characters long.');
 		}
 
@@ -54,7 +52,6 @@ class User_model extends CI_Model
 
 	public function login($username, $password)
 	{
-		// Check if username and password are not empty
 		if (empty($username) || empty($password)) {
 			return array('error' => 'Username and password are required.');
 		}

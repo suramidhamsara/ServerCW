@@ -30,6 +30,7 @@ class Home extends CI_Controller
 
 		log_message('debug', 'Home page loading');
 		$this->load->view('home', $this->data);
+		log_message('debug', 'Home page loaded');
 	}
 
 	public function show_ask_form()
@@ -43,6 +44,7 @@ class Home extends CI_Controller
 		$this->data['isAskQueBtn'] = false;
 		log_message('debug', 'Ask form loaded');
 		$this->load->view('home', $this->data);
+		log_message('debug', 'Ask form loaded');
 	}
 	public function ask_question()
 	{
@@ -80,6 +82,7 @@ class Home extends CI_Controller
 			$filtered_questions = array_unique($filtered_questions, SORT_REGULAR);
 			usort($filtered_questions, function ($a, $b) {
 				return strtotime($b['date_asked']) - strtotime($a['date_asked']);
+				log_message('debug', 'Search results sorted');
 			});
 
 			$updated_questions = [];

@@ -13,33 +13,28 @@ class Answer extends CI_Controller
 	public function mark_as_correct()
 	{
 		if (!$this->session->userdata('user_id')) {
-			// If the user is not logged in, redirect to the home page
 			redirect('login');
 		}
 
-		// Load the Answer_model
 		$this->load->model('Answer_model');
 
-		// Get answer id from post data
 		$answer_id = $this->input->post('answer_id');
 		$question_id = $this->input->post('question_id');
 
 		// Mark the answer as correct
 		$this->Answer_model->mark_as_correct($answer_id, $question_id, $this->session->userdata('user_id'));
 		redirect('question/view/' . $question_id);
+		log_message('debug', 'Answer marked as correct');
 	}
 
 	public function delete_answer()
 	{
 		if (!$this->session->userdata('user_id')) {
-			// If the user is not logged in, redirect to the home page
 			redirect('home');
 		}
-		// Load the Answer_model
 		$this->load->model('Answer_model');
 		$this->load->model('Question_model');
 
-		// Get answer id from post data
 		$answer_id = $this->input->post('answer_id');
 		$question_id = $this->input->post('question_id');
 
@@ -50,9 +45,7 @@ class Answer extends CI_Controller
 		$this->db->delete('answers');
 		$this->Question_model->unsolved_questions($question_id);
 		log_message('debug', 'Answer deleted');
-		// // Delete the answer
-		// $this->Answer_model->delete_answer($answer_id);
-		// // redirect('question/view/' . $question_id);
+
 		redirect('profile');
 	}
 

@@ -28,7 +28,6 @@ class User extends CI_Controller
 	public function register()
 	{
 		if ($this->session->userdata('user_id')) {
-			// If the user is already logged in, redirect to the home page
 			redirect('home');
 		}
 
@@ -36,19 +35,15 @@ class User extends CI_Controller
 		// Check if the form was submitted
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-			// Get user input
 			$username = $this->input->post('username');
 			$password = $this->input->post('password');
 			$email = $this->input->post('email');
 
-			// Sign Up the user
 			$registered = $this->User_model->register($username, $password, $email);
 			if (isset($registered['success'])) {
-				// If the user was registered successfully, redirect to the login page
 				redirect('login');
 				log_message('debug', 'User registered successfully');
 			} else {
-				// If the user registration failed, load the registration view
 				$this->data['error'] = $registered['error'];
 				$this->load->view('register', $this->data);
 				log_message('debug', 'User registration failed');
@@ -63,30 +58,24 @@ class User extends CI_Controller
 
 	public function login()
 	{
-
 		if ($this->session->userdata('user_id')) {
-			// If the user is already logged in, redirect to the home page
 			redirect('home');
 		}
 
 		$this->data['title'] = 'Login';
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-			// Get user input
 			$username = $this->input->post('username');
 			$password = $this->input->post('password');
 
-			// Login the user
 			$user = $this->User_model->login($username, $password);
 
 			if (is_object($user) && !isset($user->error)) {
 
-				// Set the user's session data
 				$this->session->set_userdata('user_id', $user->id);
 				$this->session->set_userdata('username', $user->username);
 				log_message('debug', 'User logged in');
 
-				// Redirect the user to the previous page
 				if ($this->session->userdata('previous_url')) {
 					redirect($this->session->userdata('previous_url'));
 					log_message('debug', 'Redirecting to previous URL');
@@ -96,13 +85,10 @@ class User extends CI_Controller
 			} else {
 
 				$this->data['error'] = $user['error'];
-				// User login failed
-				// Load the login view
 				$this->load->view('login', $this->data);
 				log_message('debug', 'User login failed');
 			}
 		} else {
-			// If the form wasn't submitted, load the login view
 			$this->load->view('login', $this->data);
 			log_message('debug', 'Login page loaded');
 		}
@@ -110,26 +96,13 @@ class User extends CI_Controller
 
 	public function logout()
 	{
-
 		if (!$this->session->userdata('user_id')) {
-			// If the user is not logged in, redirect to the home page
 			redirect('home');
 		}
 		// Destroy the user's session
 		$this->session->sess_destroy();
 		log_message('debug', 'User logged out');
-
-		// Redirect to the login page
 		redirect('home');
-	}
-
-	public function delete_account()
-	{
-		// Get user id from session
-		$user_id = $this->session->userdata('user_id');
-
-		// Delete the user account
-		$this->User_model->delete_account($user_id);
 	}
 
 	public function profile()
@@ -137,7 +110,6 @@ class User extends CI_Controller
 		$this->data['title'] = 'Profile';
 
 		if (!$this->session->userdata('user_id')) {
-			// If the user is not logged in, redirect to the home page
 			redirect('login');
 		}
 		$this->load->model('Question_model');
@@ -158,7 +130,4 @@ class User extends CI_Controller
 		log_message('debug', 'Profile page loaded');
 
 	}
-
-
-
 }

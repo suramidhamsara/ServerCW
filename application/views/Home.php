@@ -58,7 +58,6 @@
 							<input type="text" class="form-control mb-3" name="title" placeholder="Question Title" style="height: 50px; margin-bottom: 3rem !important;">
 							<textarea type="text" class="form-control mb-3" name="description"
 								placeholder="Question Description" rows="10" style="margin-bottom: 2rem !important;"></textarea>
-							<!-- <button type="submit" class="btn btn-primary" style="height: 40px; width: 100px; margin-bottom: 2rem !important;">Submit</button> -->
 							<button type="submit" class="btn btn-primary" style="height: 40px; width: 100px; margin: 0 auto 2rem; display: block;">Submit</button>
 						</form>
 					</div>

@@ -43,12 +43,10 @@ class Vote_model extends CI_Model
 				$this->db->where('user_id', $user_id);
 				$this->db->update('votes', array('vote_type' => $vote_type));
 
-				// Update the vote count for the answer
 				if ($vote_type == 'up' && $existing_vote->vote_type == 'down') {
-					// If the new vote is 'up' and the existing vote is 'down', increment the vote count by 2
 					$this->db->set('vote_count', 'vote_count+2', FALSE);
+
 				} else if ($vote_type == 'down' && $existing_vote->vote_type == 'up') {
-					// If the new vote is 'down' and the existing vote is 'up', decrement the vote count by 2
 					$this->db->set('vote_count', 'vote_count-2', FALSE);
 				}
 				$this->db->where('id', $answer_id);
@@ -56,7 +54,6 @@ class Vote_model extends CI_Model
 			}
 			return $existing_vote;
 		} else {
-			// No vote exists, so insert a new vote
 			$data = array(
 				'answer_id' => $answer_id,
 				'user_id' => $user_id,
@@ -64,7 +61,6 @@ class Vote_model extends CI_Model
 			);
 			$this->db->insert('votes', $data);
 
-			// Increment the vote count for the answer
 			if ($vote_type == 'up') {
 				$this->db->set('vote_count', 'vote_count+1', FALSE);
 			} else if ($vote_type == 'down') {
@@ -78,31 +74,25 @@ class Vote_model extends CI_Model
 
 	public function get_answer_votes($answer_id)
 	{
-		// Count the number of 'up' votes
 		$this->db->where('answer_id', $answer_id);
 		$this->db->where('vote_type', 'up');
 		$up_votes = $this->db->count_all_results('votes');
 
-		// Count the number of 'down' votes
 		$this->db->where('answer_id', $answer_id);
 		$this->db->where('vote_type', 'down');
 		$down_votes = $this->db->count_all_results('votes');
 
-		// Calculate the final count
 		$final_count = $up_votes - $down_votes;
 
-		// Return the final count
 		return $final_count;
 	}
 
 	public function get_user_total_votes($user_id)
 	{
-		// Join the 'votes' table with the 'answers' table on 'answer_id'
 		$this->db->select('votes.vote_type');
 		$this->db->from('votes');
 		$this->db->join('answers', 'votes.answer_id = answers.id');
 
-		// Filter by 'user_id' from the 'answers' table
 		$this->db->where('answers.user_id', $user_id);
 
 		// Get the results
@@ -119,10 +109,9 @@ class Vote_model extends CI_Model
 			}
 		}
 
-		// Calculate the final count
 		$final_count = $up_votes - $down_votes;
 
-		// Return the final count
+
 		return $final_count;
 	}
 }

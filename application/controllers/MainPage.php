@@ -23,6 +23,7 @@ class MainPage extends CI_Controller
 	public function index()
 	{
 		$this->load->view('mainPage', $this->data);
+		log_message('debug', 'MainPage loaded');
 	}
 
 }

@@ -31,9 +31,6 @@
 			<div class="col-md-6">
 				<h4>Answers</h4>
 			</div>
-
-
-
 			<div class="col-md-6 text-right">
 				<form action="<?php echo site_url('question/view/' . $question['id'] . '/show_answer_form') ?>"
 					method="post">
@@ -41,8 +38,6 @@
 				</form>
 			</div>
 		</div>
-
-
 
 		<?php if ($showForm): ?>
 			<div id="askForm">
@@ -64,8 +59,6 @@
 		<?php if (empty($question['answers'])): ?>
 			<p>No answers yet.</p>
 		<?php else: ?>
-
-
 			<?php foreach ($question['answers'] as $answer): ?>
 				<div class="card mb-3">
 					<div class="card-body d-flex align-items-start">
@@ -111,11 +104,7 @@
 
 			<?php endforeach; ?>
 		<?php endif; ?>
-
 	</div>
-
-
-
 </body>
 
 </html>

@@ -22,15 +22,6 @@
 								<button class="btn btn-secondary" style="margin-left: 20px;">View Questions</button>
 							</form>
 						</li>
-						<!-- <li class="nav-item">
-							<a class="nav-link" href="#">About</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Blog</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Categories</a>
-						</li> -->
 					</ul>
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item mx-auto">
@@ -62,13 +53,11 @@
 					<?php else: ?>
 						<ul class="navbar-nav ml-auto">
 							<li class="nav-item" style="padding-right: 10px;">
-								<!-- <a class="nav-link" href="<?php echo site_url('user/login'); ?>">Login</a> -->
 								<form action="<?php echo site_url('login'); ?>">
 									<button class="btn btn-primary">Login</button>
 								</form>
 							</li>
 							<li class="nav-item">
-								<!-- <a class="nav-link" href="<?php echo site_url('user/register'); ?>">Sign Up</a> -->
 								<form action="<?php echo site_url('register'); ?>">
 									<button class="btn btn-secondary">Sign Up</button>
 								</form>
