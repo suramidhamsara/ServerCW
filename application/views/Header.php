@@ -1,14 +1,14 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <html>
 	<head>
-		<title>Tec Tech</title>
+		<title>Tec Teach</title>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/flatly/bootstrap.min.css">
 		<script src="http://cdn.ckeditor.com/4.5.11/standard/ckeditor.js"></script>
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
 			<div class="container-fluid">
-				<a style="font-size: 40px" class="navbar-brand" href="<?php echo site_url('mainPage'); ?>">Tec Tech</a>
+				<a style="font-size: 40px" class="navbar-brand" href="<?php echo site_url('mainPage'); ?>">Tec Teach</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>

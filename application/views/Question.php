@@ -23,7 +23,6 @@
 
 		<?php if ($question['is_solved']): ?>
 			<p class="text-success">This question has been solved</p>
-
 		<?php endif; ?>
 
 		<hr>
@@ -73,14 +72,16 @@
 						<div class="mr-3">
 							<a
 								href="<?php echo site_url('question/' . $question['id'] . '/answer/' . $answer['id'] . '/vote/up'); ?>">
-								<span>&#x2191;</span>
+								<!-- <span>&#x2191;</span> -->
+								<span style="color: Dodgerblue;"><i class="far fa-thumbs-up"></i></span>
 							</a>
 
 							<div><?= $answer['vote_count'] ?></div>
 
 							<a
 								href="<?php echo site_url('question/' . $question['id'] . '/answer/' . $answer['id'] . '/vote/down'); ?>">
-								<span>&#x2193;</span>
+								<!-- <span>&#x2193;</span> -->
+								<span style="color: Red;"><i class="far fa-thumbs-down"></i></span>
 							</a>
 						</div>
 						<div class="w-100">
@@ -92,13 +93,6 @@
 											<input type="hidden" name="answer_id" value="<?= $answer['id'] ?>">
 											<input type="hidden" name="question_id" value="<?= $question['id'] ?>">
 											<button type="submit" class="btn btn-success">Mark as Correct</button>
-										</form>
-									</div>
-									<div class="col-auto">
-										<form action="<?php echo site_url('answer/delete_answer') ?>" method="post">
-											<input type="hidden" name="answer_id" value="<?= $answer['id'] ?>">
-											<input type="hidden" name="question_id" value="<?= $question['id'] ?>">
-											<button type="submit" class="btn btn-danger">Delete</button>
 										</form>
 									</div>
 								</div>

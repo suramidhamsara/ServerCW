@@ -41,7 +41,7 @@
 						<p class="card-text">Email: <?= $email ?></p>
 						<p class="card-text">Questions: <?= $num_questions ?></p>
 						<p class="card-text">Correct answers: <?= $num_correct_answers ?></p>
-						<p class="card-text">Votes Recieved: <?= $total_votes ?></p>
+						<p class="card-text">Votes Received: <?= $total_votes ?></p>
 					</div>
 				</div>
 			</div>
@@ -86,6 +86,10 @@
 											<p class="card-text">Answers:
 												<?= $this->Question_model->get_answer_count($question['id']) ?>
 											</p>
+											<form action="<?php echo site_url('question/delete_question') ?>" method="post">
+												<input type="hidden" name="question_id" value="<?= $question['id'] ?>">
+												<button type="submit" class="btn btn-danger">Delete Question</button>
+											</form>
 										</div>
 									</div>
 								</a>
@@ -116,6 +120,11 @@
 												</p>
 											</div>
 											<p class="card-text"><?= $answer['answer'] ?></p>
+											<form action="<?php echo site_url('answer/delete_answer') ?>" method="post">
+												<input type="hidden" name="answer_id" value="<?= $answer['id'] ?>">
+												<input type="hidden" name="question_id" value="<?= $question['id'] ?>">
+												<button type="submit" class="btn btn-danger">Delete Answer</button>
+											</form>
 										</div>
 									</div>
 								</a>

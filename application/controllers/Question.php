@@ -92,14 +92,17 @@ class Question extends CI_Controller
 			// If the user is not logged in, redirect to the home page
 			redirect('home');
 		}
-		// Load the Question_model
-		$this->load->model('Question_model');
-
 		// Get question id from post data
 		$question_id = $this->input->post('question_id');
 
+		// Load the Question_model
+		$this->load->model('Question_model');
+
+		$this->Question_model->delete_answers_by_question_id($question_id);
+
 		// Delete the question
 		$this->Question_model->delete_question($question_id);
+		redirect('profile');
 	}
 
 	public function set_previous_url()

@@ -37,14 +37,23 @@ class Answer extends CI_Controller
 		}
 		// Load the Answer_model
 		$this->load->model('Answer_model');
+		$this->load->model('Question_model');
 
 		// Get answer id from post data
 		$answer_id = $this->input->post('answer_id');
 		$question_id = $this->input->post('question_id');
 
-		// Delete the answer
-		$this->Answer_model->delete_answer($answer_id);
-		redirect('question/view/' . $question_id);
+		$this->db->where('answer_id', $answer_id);
+		$this->db->delete('votes');
+
+		$this->db->where('id', $answer_id);
+		$this->db->delete('answers');
+		$this->Question_model->unsolved_questions($question_id);
+		log_message('debug', 'Answer deleted');
+		// // Delete the answer
+		// $this->Answer_model->delete_answer($answer_id);
+		// // redirect('question/view/' . $question_id);
+		redirect('profile');
 	}
 
 	public function set_previous_url()

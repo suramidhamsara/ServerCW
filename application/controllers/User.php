@@ -46,15 +46,18 @@ class User extends CI_Controller
 			if (isset($registered['success'])) {
 				// If the user was registered successfully, redirect to the login page
 				redirect('login');
+				log_message('debug', 'User registered successfully');
 			} else {
 				// If the user registration failed, load the registration view
 				$this->data['error'] = $registered['error'];
 				$this->load->view('register', $this->data);
+				log_message('debug', 'User registration failed');
 			}
 
 		} else {
 			// If the form wasn't submitted, load the registration view
 			$this->load->view('register', $this->data);
+			log_message('debug', 'Registration page loaded');
 		}
 	}
 
@@ -81,11 +84,12 @@ class User extends CI_Controller
 				// Set the user's session data
 				$this->session->set_userdata('user_id', $user->id);
 				$this->session->set_userdata('username', $user->username);
-
+				log_message('debug', 'User logged in');
 
 				// Redirect the user to the previous page
 				if ($this->session->userdata('previous_url')) {
 					redirect($this->session->userdata('previous_url'));
+					log_message('debug', 'Redirecting to previous URL');
 				} else {
 					redirect('home');
 				}
@@ -95,10 +99,12 @@ class User extends CI_Controller
 				// User login failed
 				// Load the login view
 				$this->load->view('login', $this->data);
+				log_message('debug', 'User login failed');
 			}
 		} else {
 			// If the form wasn't submitted, load the login view
 			$this->load->view('login', $this->data);
+			log_message('debug', 'Login page loaded');
 		}
 	}
 
@@ -111,6 +117,7 @@ class User extends CI_Controller
 		}
 		// Destroy the user's session
 		$this->session->sess_destroy();
+		log_message('debug', 'User logged out');
 
 		// Redirect to the login page
 		redirect('home');
@@ -148,6 +155,7 @@ class User extends CI_Controller
 
 		// Load the profile view and pass the user data to it
 		$this->load->view('profile', $this->data);
+		log_message('debug', 'Profile page loaded');
 
 	}
 
